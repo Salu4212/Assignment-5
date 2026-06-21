@@ -1,0 +1,292 @@
+# Quicksort Algorithm: Implementation, Analysis, and Randomization
+
+## Introduction
+
+Sorting is one of the most fundamental operations in computer science and is used in applications such as database management, search engines, data analytics, and operating systems. Quicksort is a highly efficient comparison-based sorting algorithm developed by Tony Hoare in 1959. It follows the divide-and-conquer paradigm by partitioning an array around a pivot element and recursively sorting the resulting subarrays.
+
+This project explores two versions of Quicksort: Deterministic Quicksort and Randomized Quicksort. The purpose is to understand how pivot selection influences performance and to compare their theoretical and practical behavior.
+
+---
+
+## Design Choices
+
+### Deterministic Quicksort
+
+In the deterministic implementation, the last element of the array is chosen as the pivot. This approach was selected because it is simple, easy to understand, and commonly used in educational examples. The partitioning process rearranges the array so that elements smaller than the pivot appear before it, while larger elements appear after it.
+
+Advantages:
+
+* Easy to implement.
+* Requires no additional memory.
+* Performs efficiently on average.
+
+Disadvantages:
+
+* Can perform poorly on already sorted or reverse-sorted arrays.
+* More susceptible to worst-case behavior.
+
+### Randomized Quicksort
+
+The randomized version improves upon the deterministic approach by selecting a pivot randomly from the current subarray. Before partitioning, the randomly selected pivot is swapped with the last element and processed normally.
+
+Advantages:
+
+* Reduces the likelihood of consistently poor pivot selections.
+* More robust across different input distributions.
+* Provides more predictable performance.
+
+Disadvantages:
+
+* Requires generating random numbers.
+* Slightly higher overhead due to random pivot selection.
+
+---
+
+## Implementation Details
+
+Both implementations use the divide-and-conquer strategy.
+
+### Step 1: Pivot Selection
+
+A pivot element is chosen.
+
+* Deterministic Quicksort: Last element.
+* Randomized Quicksort: Random element from the subarray.
+
+### Step 2: Partitioning
+
+The partitioning process reorganizes the array into two sections:
+
+* Elements smaller than or equal to the pivot.
+* Elements greater than the pivot.
+
+After partitioning, the pivot is placed in its final sorted position.
+
+### Step 3: Recursive Sorting
+
+The algorithm recursively sorts the left and right partitions until each partition contains one or zero elements.
+
+For example:
+
+Original Array:
+
+```text
+[10, 7, 8, 9, 1, 5]
+```
+
+Pivot = 5
+
+After partitioning:
+
+```text
+[1, 5, 8, 9, 10, 7]
+```
+
+The algorithm then recursively sorts the left and right portions.
+
+---
+
+## Time Complexity Analysis
+
+### Best Case: O(n log n)
+
+The best case occurs when the pivot consistently divides the array into two equal halves.
+
+Recurrence Relation:
+
+```text
+T(n) = 2T(n/2) + O(n)
+```
+
+Since each level performs O(n) partitioning work and there are O(log n) levels, the total running time becomes:
+
+```text
+O(n log n)
+```
+
+Example:
+
+```text
+[4, 2, 6, 1, 7, 5, 3]
+```
+
+If the pivot repeatedly splits the array into balanced halves, performance remains optimal.
+
+---
+
+### Average Case: O(n log n)
+
+The average case assumes random input data or reasonably balanced partitions.
+
+Although partitions are rarely perfectly balanced, they are generally balanced enough to keep recursion depth near O(log n).
+
+As a result:
+
+```text
+Average Time Complexity = O(n log n)
+```
+
+This is why Quicksort is one of the fastest sorting algorithms in practice.
+
+---
+
+### Worst Case: O(n²)
+
+The worst case occurs when the pivot repeatedly produces extremely unbalanced partitions.
+
+Example:
+
+```text
+[1, 2, 3, 4, 5, 6, 7]
+```
+
+Using the last element as the pivot:
+
+* First partition separates one element.
+* Remaining array size becomes n − 1.
+* This pattern repeats recursively.
+
+Recurrence Relation:
+
+```text
+T(n) = T(n − 1) + O(n)
+```
+
+Result:
+
+```text
+O(n²)
+```
+
+This leads to significantly slower performance for large datasets.
+
+---
+
+## Space Complexity Analysis
+
+Quicksort is considered an in-place sorting algorithm because it does not require additional arrays.
+
+### Best and Average Case
+
+Balanced partitions create a recursion depth of:
+
+```text
+O(log n)
+```
+
+Therefore:
+
+```text
+Space Complexity = O(log n)
+```
+
+### Worst Case
+
+Highly unbalanced partitions create a recursion depth of:
+
+```text
+O(n)
+```
+
+Therefore:
+
+```text
+Space Complexity = O(n)
+```
+
+The additional memory is used only for recursive function calls.
+
+---
+
+## Randomized Quicksort Analysis
+
+Randomized Quicksort introduces randomness into pivot selection.
+
+Instead of always choosing the first or last element, the algorithm randomly selects a pivot from the current subarray.
+
+Benefits include:
+
+* Reduced chance of worst-case partitions.
+* Improved consistency.
+* Better performance on sorted inputs.
+
+Although the theoretical worst case remains O(n²), the probability of encountering it becomes extremely small.
+
+This makes Randomized Quicksort preferable for practical applications.
+
+---
+
+## Empirical Analysis
+
+The algorithms were tested using three types of input data:
+
+### Random Data
+
+Example:
+
+```text
+[45, 12, 89, 34, 67, 23]
+```
+
+Results:
+
+* Deterministic Quicksort performs well.
+* Randomized Quicksort performs similarly.
+
+### Sorted Data
+
+Example:
+
+```text
+[1, 2, 3, 4, 5, 6]
+```
+
+Results:
+
+* Deterministic Quicksort slows significantly.
+* Randomized Quicksort remains efficient.
+
+### Reverse-Sorted Data
+
+Example:
+
+```text
+[6, 5, 4, 3, 2, 1]
+```
+
+Results:
+
+* Deterministic Quicksort often approaches worst-case behavior.
+* Randomized Quicksort continues to produce balanced partitions.
+
+### Observations
+
+| Input Type     | Deterministic | Randomized |
+| -------------- | ------------- | ---------- |
+| Random         | Fast          | Fast       |
+| Sorted         | Slow          | Fast       |
+| Reverse Sorted | Slow          | Fast       |
+
+The results support the theoretical analysis. Randomized Quicksort consistently delivers more reliable performance.
+
+---
+
+## Real-World Applications
+
+Quicksort is widely used in:
+
+* Database systems
+* Search engines
+* Operating systems
+* Data analytics platforms
+* Scientific computing
+
+Randomized Quicksort is particularly useful when the input order cannot be predicted, ensuring efficient performance across a variety of datasets.
+
+---
+
+## Conclusion
+
+This project demonstrated the implementation and analysis of both Deterministic and Randomized Quicksort. The deterministic version is simple and efficient for many datasets but can suffer from poor performance when pivot selection is unfavorable. Randomized Quicksort addresses this issue by randomly selecting pivots, significantly reducing the likelihood of worst-case behavior.
+
+The theoretical and empirical analyses confirm that both algorithms achieve an average time complexity of O(n log n), but Randomized Quicksort offers greater robustness and reliability in practical applications. As a result, randomized pivot selection is often preferred in modern software systems where input distributions are unpredictable.
